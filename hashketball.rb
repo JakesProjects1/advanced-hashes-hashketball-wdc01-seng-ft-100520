@@ -128,12 +128,12 @@ end
 
 # Write code here
 
-def num_points_scored(player_name)
-  game_hash.each do |location, team_data|
-    team_data[:players].each do |player|
-      if player[:player_name] == player_name
+def num_points_scored(player_search)
+  game_hash.each do |team, team_info|
+    team_info[:players].each do |player|
+      if player[:player_name] == player_search
         return player[:points]
-     end
+      end
     end
   end
 end
@@ -162,32 +162,20 @@ def team_names
 end
 
 def player_numbers(input)
-  output = []
-  game_hash.each do |team, team_info|
-    if team_info[:team_name] == input 
-      team_info.each do |key, value|
-        if key == :players
-          value.each do |player|
-          output.push(player[:number])
-          end
-        end
-      end
+ game_hash.each do |home_away, keys|
+    if keys[:team_name] == input
+       return keys[:players].map { |player| player[:number] }
     end
   end
-  return output
 end
 
 def player_stats(input)
   game_hash.each do |team, team_info|
-    team_info.each do |key, value|
-      if key == :players
-        value.each do |player|
+    team_info[:players].each do |player|
           if input == player[:player_name]
             #player.delete(:player_name) # having player name inside the hash was a bad idea!
             return player
           end
-        end
-      end
     end
   end
 end
